@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>미래청년일자리 AI TF 실습 페이지</title>
+<style>
+:root{
+  --ink:#141a33; --lime:#c6f43f; --lime2:#9cc71f; --violet:#6d5cf0; --mint:#22b98a; --coral:#ff6a5a; --gold:#e3a90c;
+  --paper:#f5f6fb; --card:#ffffff; --sky:#e7eaff; --line:#d6dbef; --mute:#5d6690; --code:#141a33; --codetx:#e8ecff;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{ --ink:#eef0ff; --paper:#0f1329; --card:#1a2042; --sky:#232b58; --line:#2f3870; --mute:#a3abd6; --code:#0a0d1f; --codetx:#e8ecff; color-scheme:dark; }
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:76px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif;font-size:17px;line-height:1.65;word-break:keep-all}
+header.hero{background:#141a33;color:#fff;padding:34px 20px 30px}
+header.hero .in{max-width:880px;margin:0 auto}
+header.hero .k{color:var(--lime);font-weight:900;font-size:15px;margin:0 0 6px}
+header.hero h1{margin:0;font-size:34px;line-height:1.25;font-weight:900}
+header.hero p{margin:10px 0 0;color:#c4cbef;font-size:16px}
+nav.tabs{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:2px solid var(--line);overflow-x:auto;white-space:nowrap}
+nav.tabs .in{max-width:880px;margin:0 auto;display:flex;gap:4px;padding:8px 12px}
+nav.tabs a{display:inline-block;text-decoration:none;color:var(--ink);font-weight:900;font-size:15px;padding:8px 14px;border-radius:10px}
+nav.tabs a:hover{background:var(--sky)}
+main{max-width:880px;margin:0 auto;padding:10px 16px 60px}
+section{margin-top:34px}
+h2{font-size:26px;margin:0 0 4px;line-height:1.3}
+h2 .lv{display:inline-block;font-size:14px;padding:3px 10px;border-radius:8px;color:#fff;vertical-align:4px;margin-right:6px}
+.l1{background:var(--gold)}.l2{background:var(--violet)}.l3{background:var(--mint)}.l4{background:var(--coral)}.mx{background:#141a33;color:var(--lime)!important}
+h3{font-size:19px;margin:24px 0 8px}
+.lead{color:var(--mute);margin:0 0 12px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:16px 18px;margin:12px 0}
+.note{background:var(--sky);border-radius:12px;padding:12px 16px;margin:12px 0;font-weight:700}
+.warn{background:#ffe6e2;color:#7a2219;border-radius:12px;padding:12px 16px;margin:12px 0;font-weight:700}
+@media (prefers-color-scheme:dark){ .warn{background:#4a1f1b;color:#ffd9d3} }
+ol.steps{padding-left:0;list-style:none;counter-reset:s;margin:10px 0}
+ol.steps li{counter-increment:s;position:relative;padding:6px 0 6px 44px;font-weight:700}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:5px;width:30px;height:30px;border-radius:9px;background:#141a33;color:var(--lime);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px}
+.copy{position:relative;margin:10px 0}
+.copy .lab{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#232b52;color:#fff;border-radius:12px 12px 0 0;padding:8px 12px;font-size:14px;font-weight:900}
+.copy pre{margin:0;background:var(--code);color:var(--codetx);border-radius:0 0 12px 12px;padding:14px 16px;font-family:Consolas,'D2Coding','Malgun Gothic',monospace;font-size:15px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.copy button{font-family:inherit;font-size:14px;font-weight:900;border:0;border-radius:8px;padding:6px 12px;background:var(--lime);color:#141a33;cursor:pointer}
+.copy button.done{background:var(--mint);color:#fff}
+.mission{border-radius:18px;padding:0;overflow:hidden;border:2px solid var(--line);background:var(--card);margin:16px 0}
+.mission summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:12px;color:#fff;font-weight:900;font-size:20px}
+.mission summary::-webkit-details-marker{display:none}
+.mission summary .e{font-size:30px}
+.mission summary .arr{margin-left:auto;font-size:16px;opacity:.85}
+.mission[open] summary .arr{transform:rotate(180deg)}
+.mission .body{padding:4px 18px 18px}
+.m0 summary{background:#c48a0a}.m1 summary{background:var(--violet)}.m2 summary{background:var(--mint)}.m3 summary{background:var(--coral)}
+.bubble{border:2px solid var(--line);border-radius:14px;padding:12px 16px;background:var(--paper);font-weight:700;margin:12px 0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:16px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--sky)}
+.check{display:flex;gap:12px;align-items:flex-start;margin:8px 0}
+.check i{font-style:normal;flex:none;width:30px;height:30px;border-radius:9px;background:var(--coral);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900}
+.gl{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.gl div{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-size:15px}
+.gl b{display:block;font-size:16px}
+a.padlet{display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:#ff6a5a;color:#fff;text-decoration:none;font-weight:900;font-size:17px;padding:10px 18px;border-radius:12px}
+nav.tabs a.pd{background:#ff6a5a;color:#fff;margin-left:auto}
+.fill{display:grid;gap:8px;margin:10px 0}
+.fill label{display:flex;align-items:center;gap:10px;font-weight:900}
+.fill label span{flex:none;width:30px;height:30px;border-radius:9px;background:var(--gold);color:#141a33;display:flex;align-items:center;justify-content:center}
+.fill input{flex:1;min-width:0;font-family:inherit;font-size:16px;font-weight:700;border:2px solid var(--line);border-radius:10px;padding:9px 12px;background:var(--card);color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:640px){.two{grid-template-columns:1fr}}
+footer{max-width:880px;margin:0 auto;padding:20px 16px 40px;color:var(--mute);font-size:14px}
+</style>
+</head>
+<body>
+<header class="hero"><div class="in">
+  <p class="k">미래청년일자리 AI 업무개선 TF</p>
+  <h1>레벨업 작전 실습 페이지</h1>
+  <p>복사 버튼을 눌러 AI에 붙여넣으며 진행합니다. 미래청년일자리와 등장인물, 자료는 모두 가상입니다. 실제 회사 자료와 개인정보는 AI에 올리지 않습니다.</p>
+  <a class="padlet" href="https://padlet.com/qkdtjdus/_-s025efucxy1513ce3t1q" target="_blank" rel="noopener">📌 공유 패들렛 열기</a>
+</div></header>
+
+<nav class="tabs"><div class="in">
+  <a href="#lv1">Lv1 팀 이름</a><a href="#lv2">Lv2 스킬 만들기</a><a href="#career">커리어 스킬</a><a href="#quest">팀 퀘스트</a><a href="#lv4">Lv4 검수</a><a href="#end">마무리</a><a href="#words">용어</a><a class="pd" href="https://padlet.com/qkdtjdus/_-s025efucxy1513ce3t1q" target="_blank" rel="noopener">📌 패들렛</a>
+</div></nav>
+
+<main>
+
+<!-- Lv1 -->
+<section id="lv1">
+  <h2><span class="lv l1">Lv1</span>AI에게 우리 팀 이름 맡기기</h2>
+  <p class="lead">팀에서 찾은 공통점 3개를 넣어 팀 이름과 구호를 받아 보세요.</p>
+  <ol class="steps">
+    <li>아래 칸에 팀 공통점 3개를 입력 (프롬프트가 자동으로 완성돼요)</li>
+    <li>복사 버튼을 눌러 Gemini, ChatGPT, Claude 중 편한 AI에 붙여넣기</li>
+    <li>후보 5개 중 팀 투표로 하나 고르고, 패들렛에 팀 이름 올리기</li>
+  </ol>
+  <div class="fill">
+    <label><span>1</span><input id="cm1" placeholder="예: 출근길이 한 시간 넘는다"></label>
+    <label><span>2</span><input id="cm2" placeholder="예: 엑셀 정리를 제일 많이 한다"></label>
+    <label><span>3</span><input id="cm3" placeholder="예: 점심 메뉴 고르는 데 오래 걸린다"></label>
+  </div>
+  <div class="copy"><div class="lab">팀명 짓기 프롬프트 (자동 완성)<button data-copy>복사</button></div><pre id="lv1Prompt"></pre></div>
+</section>
+
+<!-- Lv2 -->
+<section id="lv2">
+  <h2><span class="lv l2">Lv2</span>매뉴얼 장인: 회의록 스킬 만들기</h2>
+  <p class="lead">회의록을 넣기만 하면 늘 같은 형식으로 정리되는 업무 매뉴얼을 Gemini에 저장합니다. 배지 조건은 팀원 전원 성공입니다.</p>
+
+  <h3>1. Gemini에 스킬 등록하기</h3>
+  <p>방법은 두 가지예요. 오늘 Lv2는 <b>방법 ②</b>로 칸의 역할을 익히고, 퀘스트에서는 <b>방법 ①</b>로 빠르게 만들어요.</p>
+  <div class="two">
+    <div class="card" style="margin:0"><b>방법 ① 대화로 만들기</b><br>대화창에 아래 "대화로 만들기 프롬프트"를 붙여넣으면 Gemini가 스킬로 만들어 줘요.</div>
+    <div class="card" style="margin:0"><b>방법 ② 화면에서 직접</b><br>왼쪽 아래 <b>⚙ 설정 → 스킬 → 만들기</b>를 누르고 세 칸에 붙여넣은 뒤 저장해요.</div>
+  </div>
+  <ol class="steps">
+    <li><b>개인 Google 계정</b>으로 gemini.google.com 접속</li>
+    <li>왼쪽 아래 <b>⚙ 설정</b> → <b>스킬</b> → 오른쪽 위 <b>만들기</b></li>
+    <li>아래 세 칸을 하나씩 복사해서 이름, 설명, 요청사항 칸에 붙여넣기</li>
+    <li>저장</li>
+  </ol>
+  <div class="copy"><div class="lab">① 이름 칸<button data-copy>복사</button></div><pre>meeting-notes-organizer</pre></div>
+  <div class="copy"><div class="lab">② 설명 칸<button data-copy>복사</button></div><pre>회의록 원문을 받아 결정사항, 할 일, 확인 필요 항목으로 정리한다. 회의록, 회의 메모, 회의 정리 요청에 사용한다.</pre></div>
+  <div class="copy"><div class="lab">③ 요청사항 칸<button data-copy>복사</button></div><pre># 회의록 정리 스킬
+
+## 절차
+1. 회의 원문에서 결정된 사항만 뽑는다. 논의만 하고 결정되지 않은 내용은 결정사항에 넣지 않는다.
+2. 할 일을 표로 정리한다. 열: 할 일 / 담당자 / 기한 / 근거 문장
+3. 담당자나 기한이 원문에 없으면 추측하지 말고 "미정"으로 쓴다.
+4. 마지막에 "확인 필요" 목록을 만든다. 미정 항목, 모호한 표현, 숫자 불일치를 넣는다.
+
+## 검증 규칙
+- 원문에 없는 사람, 날짜, 숫자를 만들어 넣지 않는다.
+- 전화번호, 개인 이메일 등 개인정보가 있으면 가리고 확인 필요에 적는다.
+- 결과 끝에 팀장 보고 메일 초안을 붙인다. 제목 한 줄, 본문 다섯 줄 이내, 결정이 필요한 것을 먼저 쓴다. 발송하지 않는다.
+- 맨 마지막에 카카오톡 공유용 3줄 요약(200자 이내)을 붙인다.
+- 회의록, 메일, 요약의 숫자와 미정 항목은 모두 같아야 한다.</pre></div>
+  <div class="note">설명 칸은 AI가 "언제 이 스킬을 쓸지" 판단하는 기준이에요. 짧게 "회의록 스킬"이라고만 쓰지 마세요.</div>
+  <div class="copy"><div class="lab">방법 ① 대화로 만들기 프롬프트<button data-copy>복사</button></div><pre>아래 내용으로 Gemini 스킬을 만들어 줘.
+이름: meeting-notes-organizer
+설명: 회의록 원문을 받아 결정사항, 할 일, 확인 필요 항목으로 정리한다. 회의록, 회의 메모, 회의 정리 요청에 사용한다.
+요청사항: (위 ③ 요청사항 칸 내용을 여기에 붙여넣기)</pre></div>
+  <div class="card"><b>Claude를 쓰는 분은</b> 대화로 "이 내용으로 스킬을 만들어 줘"라고 하면 만들어 주고, 버튼으로 등록할 수 있어요. 또는 설정 → Skills → 업로드로 머리말(---)이 있는 .md 파일을 올려요. 부를 때는 대화창에 <b>/</b> 를 입력해요.</div>
+
+  <h3>2. 스킬 불러서 함정 회의록 정리하기</h3>
+  <ol class="steps">
+    <li>새 채팅을 열고 입력창에 <b>@</b> 입력</li>
+    <li>목록에서 meeting-notes-organizer 고르기</li>
+    <li>아래 회의록을 붙여넣고 보내기</li>
+  </ol>
+  <div class="copy"><div class="lab">함정 회의록 (함정 3개가 숨어 있어요)<button data-copy>복사</button></div><pre>미래청년일자리 12월 교육 준비 회의 메모
+- 12/10 인턴 교육은 교육실에서 하기로 함
+- 다과는 김민지 씨가 업체 알아보기로. 업체 연락처 010-1234-5678
+- 만족도 조사지는 누가 할지 다음에 정하기로
+- 홍보 포스터는 다음 주 중에 박준호 씨가 초안
+- 예산은 85만원 안에서. 강사비 50만원, 다과 20만원, 인쇄 20만원 예상
+- 장소 대관 필요 여부는 아직 모름</pre></div>
+  <div class="card"><b>팀 미션</b> AI가 함정을 몇 개 잡았는지 세어 보세요. AI가 놓친 함정을 사람이 찾아도 점수가 됩니다.</div>
+
+  <h3>3. 같은 스킬로 다른 회의록 정리하기</h3>
+  <div class="copy"><div class="lab">두 번째 회의록<button data-copy>복사</button></div><pre>홍보팀 주간 회의
+- 1월 신규 프로그램 SNS 홍보 3회 하기로 결정
+- 카드뉴스는 이수진 씨 담당, 금요일까지
+- 인스타 광고는 할지 말지 팀장님 의견 듣고 결정
+- 지난달 게시물 조회수 평균 1,200회 (자료 확인 필요)</pre></div>
+  <p>새 채팅에서 다시 @로 스킬을 부르고 붙여넣으세요. 결과 형식이 첫 번째와 같은지 비교해 보세요.</p>
+
+  <h3>4. 스킬 개조 라운드</h3>
+  <p>팀에서 토론한 결과를 규칙 한 줄로 쓰고, 스킬 편집 화면의 요청사항 맨 아래 <b>검증 규칙</b>에 추가해 저장하세요. 그다음 두 번째 회의록으로 다시 실행합니다.</p>
+  <div class="copy"><div class="lab">규칙 예시 (하나를 고르거나 직접 쓰세요)<button data-copy>복사</button></div><pre>- 팀 내부용 할 일 표에서는 담당자 이름을 그대로 쓴다. 전화번호와 이메일만 가린다.
+- 이름은 성만 남기고 가린다. 예: 김○○
+- 결정사항과 할 일을 섞지 않는다. "~하기로 함"이라도 누가 할 일이면 할 일 표에만 쓴다.
+- 금액이 나오면 합계를 직접 계산해 표 아래에 적는다.</pre></div>
+
+  <div class="card">
+    <b>🛟 스킬 메뉴가 안 보이면</b>
+    <ol class="steps" style="margin-bottom:0">
+      <li>회사나 학교 계정이 아닌 개인 Google 계정인지 확인</li>
+      <li>Gemini 앱 활동 기록이 켜져 있는지 확인</li>
+      <li>그래도 안 보이면 옆 팀원 화면으로 함께 진행 (팀 배지는 그대로 인정)</li>
+    </ol>
+  </div>
+  <div class="card">
+    <b>ChatGPT 무료 계정으로 해 보고 싶다면</b>
+    <p style="margin:6px 0">무료 계정은 스킬 내용을 만들 수는 있지만 등록과 호출이 안 돼요. 유료 계정도 직접 만든 스킬은 Work, Codex에서 쓰고 일반 Chat에서는 쓸 수 없어요. 위 세 칸 내용을 메모장에 붙여 SKILL.md로 저장한 뒤 대화마다 첨부하는 방식으로 비슷하게 쓸 수 있어요.</p>
+    <div class="copy"><div class="lab">첨부할 때 쓰는 프롬프트<button data-copy>복사</button></div><pre>첨부한 SKILL.md의 절차와 검증 규칙을 그대로 따라서 아래 회의록을 정리해 줘.
+(회의록 붙여넣기)</pre></div>
+  </div>
+</section>
+
+<!-- Career -->
+<section id="career">
+  <h2><span class="lv" style="background:#0e7c86">보너스</span>나만의 커리어 스킬 만들기</h2>
+  <p class="lead">인턴 기간에 한 일을 이력서와 자기소개서에 쓸 수 있는 성과 문장으로 바꿔 주는 개인 스킬이에요. 이번에는 대화로 스킬을 만듭니다.</p>
+  <ol class="steps">
+    <li>아래 커리어 스킬 프롬프트를 복사해 Gemini 대화창에 붙여넣기 (스킬로 등록)</li>
+    <li>새 채팅에서 <b>@career-highlighter</b> 부르기</li>
+    <li>재료 3줄을 채워 붙여넣고 실행</li>
+    <li>옆 사람과 결과를 바꿔 과장 버그 찾기</li>
+  </ol>
+  <div class="copy"><div class="lab">커리어 스킬 프롬프트 (대화로 만들기)<button data-copy>복사</button></div><pre>아래 내용으로 Gemini 스킬을 만들어 줘.
+이름: career-highlighter
+설명: 인턴 업무 경험을 받아 성과 중심 문장, 경력기술서 한 줄, 자기소개서 문단으로 정리한다. 경력 정리, 이력서, 자기소개서 문장 요청에 사용한다.
+요청사항:
+# 경력 정리 스킬
+## 절차
+1. 입력된 경험을 상황, 행동, 결과로 나눈다.
+2. 성과 중심 문장 3개를 쓴다. "무엇을 해서 무엇이 달라졌는지"가 드러나게 쓴다.
+3. 경력기술서용 한 줄(40자 안팎)을 쓴다.
+4. 자기소개서용 문단 하나(5문장 이내)를 쓴다.
+5. 마지막에 "확인 필요" 목록을 만든다.
+## 검증 규칙
+- 사용자가 말하지 않은 숫자, 기간, 성과를 만들어 넣지 않는다. 숫자가 없으면 숫자 없이 쓴다.
+- "혁신", "주도적으로" 같은 과장 표현을 쓰지 않는다.
+- 팀이 한 일을 혼자 한 것처럼 쓰지 않는다. 내 역할을 분명히 쓴다.
+- 회사명, 내부 수치, 동료와 고객 이름이 들어오면 빼고 확인 필요에 적는다.</pre></div>
+  <div class="copy"><div class="lab">재료 3줄 (괄호 뒤를 채워서 붙여넣기)<button data-copy>복사</button></div><pre>@career-highlighter
+1. 실제 인턴 업무 하나 (일의 종류만): 
+2. 오늘 TF 실습에서 맡은 역할과 한 일: 
+3. 내가 확실히 아는 결과 (모르면 비워 두기): </pre></div>
+  <div class="card"><b>과장 버그 체크</b><br>① 내가 말하지 않은 숫자가 있나 ② 과한 표현이 있나 ③ 팀의 일을 혼자 한 것처럼 썼나 ④ 회사명, 내부 수치, 사람 이름이 남았나<br>면접관이 "이거 증명할 수 있어요?"라고 물으면 대답할 수 있는 문장만 남기세요.</div>
+  <div class="warn">이력서에 쓰기 전에 회사의 보안 규정과 공개 가능한 범위를 꼭 확인하세요.</div>
+  <div class="card">대화로 등록이 안 되면 ⚙ 설정 → 스킬 → 만들기에서 이름, 설명, 요청사항을 칸에 나눠 붙여넣으세요.</div>
+</section>
+
+<!-- Quest -->
+<section id="quest">
+  <h2><span class="lv mx">퀘스트</span>한결 팀장의 진짜 의뢰</h2>
+  <p class="lead">강사 화면에서 뽑은 미션 카드를 열고, 체크포인트를 하나씩 통과하세요. 체크포인트를 통과할 때마다 프롬프터 역할을 교대합니다.</p>
+
+  <div class="card">
+    <b>진행 순서</b>
+    <ol class="steps" style="margin-bottom:0">
+      <li><b>CP1 팀 스킬 설계</b>: 아래 "스킬 초안 요청 프롬프트"로 초안을 받고, 팀이 검수 규칙을 한 줄 이상 고친 뒤 "이 내용으로 스킬을 만들어 줘" 또는 ⚙ 설정 → 스킬 → 만들기로 등록</li>
+      <li><b>CP2 결과물 완성</b>: 새 채팅에서 @로 팀 스킬을 부르고 미션 자료를 넣어 결과물 완성. <b>표준 양식 순서와 표를 그대로</b> 지켰는지, 검수관이 원본 자료와 대조</li>
+      <li><b>보너스</b>: 결과물을 Gemini Canvas로 업무 진행판 화면으로 만들기</li>
+    </ol>
+  </div>
+
+  <details class="mission m0"><summary><span class="e">🎪</span>미션 A. 행사 운영<span class="arr">▼</span></summary><div class="body">
+    <div class="bubble">한결 팀장: 12월 인턴 교육 행사 준비를 맡아 주세요. 메모를 보고 실행 체크리스트와 예산표를 만들어 주세요.</div>
+    <div class="copy"><div class="lab">미션 자료: 행사 준비 메모<button data-copy>복사</button></div><pre>[행사 준비 메모]
+- 행사명: 인턴 및 신규직원 AI 실무 교육
+- 행사일: 12월 10일(수) 오후 2시, 교육실
+- 인원: 25명
+- 예산: 85만 원 이내
+- 강사비 40만 원
+- 다과 25명분, 1인 8,000원
+- 교재 인쇄 25부, 1부 4,000원
+- 현수막 1개 8만 원
+- 기념품 25개, 1개 3,000원 (팀장님 검토 중, 아직 확정 아님)
+- 참가 안내 문자는 12월 11일(금)에 발송
+- 교육실 프로젝터 점검은 서나래 담당
+- 만족도 조사지 담당은 미정</pre></div>
+    <div class="copy"><div class="lab">미래청년일자리 표준 양식 (이 순서와 표 그대로)<button data-copy>복사</button></div><pre>[미래청년일자리 행사 준비 보고]
+1. 행사 개요: 행사명 / 일시(요일 포함) / 장소 / 인원
+2. 실행 체크리스트: | 할 일 | 담당 | 기한 | 상태 |
+3. 예산표: | 항목 | 단가 | 수량 | 금액 | 확정 여부 |
+   합계(확정 항목) / 합계(미확정 포함)
+4. 확인 필요
+5. 팀장 보고 한 줄</pre></div>
+    <p><b>만들 것</b>: 실행 체크리스트(할 일, 담당, 기한, 상태), 예산표(항목, 단가, 수량, 금액, 합계), 확인 필요 목록</p>
+    <p><b>완료 조건</b>: 예산표 합계를 팀이 직접 계산해서 AI 결과와 맞춰 보기</p>
+  </div></details>
+
+  <details class="mission m1"><summary><span class="e">📝</span>미션 B. 회의 운영<span class="arr">▼</span></summary><div class="body">
+    <div class="bubble">한결 팀장: 지난 운영 회의 메모예요. 회의록과 할 일 표, 그리고 단톡방에 올릴 짧은 요약을 만들어 주세요.</div>
+    <div class="copy"><div class="lab">미션 자료: 운영 회의 메모<button data-copy>복사</button></div><pre>[11월 운영 회의 메모]
+참석: 한결 팀장, 서나래, 오태민, 진유솔
+- 한결: 겨울방학 청년 캠프를 하자는 의견이 많았음
+- 서나래: 예산 때문에 1박 2일보다 당일 행사가 낫다고 봄
+- 오태민: 1박 2일이 참여율이 높았다는 작년 자료가 있음. 찾아보겠음
+- 캠프 일정은 1월 셋째 주로 잠정. 확정은 다음 회의에서
+- 장소 후보 3곳은 진유솔이 금요일까지 알아보기로 함
+- 홍보 포스터는 누가 할지 정하지 못함
+- 참가비는 무료로 하기로 결정
+- 외부 강사 섭외 후보: 오태민 지인 강사, 연락처 010-5678-1234
+- 다음 회의는 12월 첫째 주</pre></div>
+    <div class="copy"><div class="lab">미래청년일자리 표준 양식 (이 순서와 표 그대로)<button data-copy>복사</button></div><pre>[미래청년일자리 회의록]
+회의명 / 일시 / 참석자
+1. 결정사항
+2. 미결정 사항 (의견이 나뉘면 의견별로)
+3. 할 일: | 할 일 | 담당 | 기한 | 근거 문장 |
+4. 확인 필요
+5. 단톡방 공유용 요약 (200자 이내)</pre></div>
+    <p><b>만들 것</b>: 회의록(결정사항, 미결정 사항), 할 일 표(할 일, 담당, 기한, 근거 문장), 단톡방용 요약 200자 이내</p>
+    <p><b>완료 조건</b>: 서로 다른 의견이 하나로 합쳐지지 않았는지 팀이 확인하기</p>
+  </div></details>
+
+  <details class="mission m2"><summary><span class="e">📣</span>미션 C. 홍보<span class="arr">▼</span></summary><div class="body">
+    <div class="bubble">한결 팀장: 취업 특강 홍보를 부탁해요. 채널별로 언제 무엇을 올릴지 정하고, 바로 쓸 수 있는 문구도 만들어 주세요.</div>
+    <div class="copy"><div class="lab">미션 자료: 홍보 요청서<button data-copy>복사</button></div><pre>[홍보 요청서]
+- 행사: 청년 취업 특강 '첫 출근 생존법'
+- 일시: 12월 17일(목) 저녁 7시, 2층 강당
+- 대상: 만 19~34세 청년 50명
+- 참가비: 무료
+- 신청 기간: 12월 1일(화)부터 12월 18일(금)까지
+- 홍보 채널: 인스타그램, 홈페이지, 문자
+- 참고: 작년 특강은 참가비 5,000원이었음
+- 디자이너가 보낸 포스터 문구 초안: "선착순 30명 모집!"
+- 담당: 인스타그램은 진유솔, 홈페이지와 문자는 미정</pre></div>
+    <div class="copy"><div class="lab">미래청년일자리 표준 양식 (이 순서와 표 그대로)<button data-copy>복사</button></div><pre>[미래청년일자리 홍보 계획서]
+1. 행사 정보 확인표: | 항목 | 요청서 내용 | 확인 결과 |
+2. 채널별 일정: | 채널 | 게시일 | 내용 | 담당 |
+3. 문구: 인스타그램용 / 문자용 (90자 이내)
+4. 확인 필요</pre></div>
+    <p><b>만들 것</b>: 채널별 홍보 일정표(채널, 게시일, 내용, 담당), SNS 문구 2종(인스타그램용, 문자용), 확인 필요 목록</p>
+    <p><b>완료 조건</b>: 문구에 들어간 날짜, 인원, 참가비를 요청서와 한 줄씩 대조하기</p>
+  </div></details>
+
+  <details class="mission m3"><summary><span class="e">📞</span>미션 D. 문의 대응<span class="arr">▼</span></summary><div class="body">
+    <div class="bubble">한결 팀장: 이번 주 문의가 쌓였어요. 유형별로 나누고 급한 순서를 정한 뒤, 답변 초안을 만들어 주세요.</div>
+    <div class="copy"><div class="lab">미션 자료: 기관 안내 자료와 문의 6건<button data-copy>복사</button></div><pre>[기관 안내 자료]
+- 운영: 평일 오전 9시~오후 6시 (토요일, 일요일, 공휴일 휴무)
+- 주차: 방문객 2시간 무료
+- 청년 캠프: 일정 미정, 확정되면 홈페이지에 공지
+
+[이번 주 문의]
+1. (12/1) 인턴 교육 신청했는데 확인 문자를 못 받았어요. 제 이름은 모하린, 번호는 010-2222-3333이에요.
+2. (12/1) 주차할 수 있나요?
+3. (12/2) 취업 특강 녹화본을 받을 수 있나요?
+4. (12/2) 토요일에도 상담 가능한가요?
+5. (12/3) 어제 문의했는데 아직 답이 없네요. 확인 문자 언제 와요? (모하린)
+6. (12/3) 청년 캠프 날짜가 언제예요?</pre></div>
+    <div class="copy"><div class="lab">미래청년일자리 표준 양식 (이 순서와 표 그대로)<button data-copy>복사</button></div><pre>[미래청년일자리 문의 처리 대장]
+1. 분류표: | 번호 | 유형 | 답변 가능 여부 | 우선순위 | 담당 |
+2. 답변 초안: 문의 번호별
+3. 확인 필요 (안내 자료에 없는 내용)</pre></div>
+    <p><b>만들 것</b>: 문의 분류표(번호, 유형, 안내 자료로 답변 가능 여부, 우선순위, 담당), 문의별 답변 초안, 확인 필요 목록</p>
+    <p><b>완료 조건</b>: 안내 자료에 없는 내용을 AI가 지어내지 않았는지 확인하기</p>
+  </div></details>
+
+  <h3>CP1. 스킬 초안 요청 프롬프트</h3>
+  <p>AI에게 스킬 초안을 받은 뒤 <b>반드시 팀이 읽고 고치세요</b>. 그대로 쓰면 AI의 실수도 함께 매뉴얼이 됩니다.</p>
+  <div class="copy"><div class="lab">스킬 초안 요청<button data-copy>복사</button></div><pre>우리 팀은 미래청년일자리에서 (미션 이름) 업무를 맡았어.
+아래 의뢰를 반복해서 처리할 수 있는 스킬을 만들고 싶어.
+Gemini 스킬 화면에 넣을 수 있게 세 부분으로 나눠서 써 줘.
+1. 이름: 영문 소문자와 하이픈만 사용
+2. 설명: 어떤 자료를 받아 무엇을 만드는지, 언제 쓰는지 한두 문장
+3. 요청사항: 절차, 출력 형식, 검증 규칙
+검증 규칙에는 아래 내용을 꼭 넣어 줘.
+- 원문에 없는 사람, 날짜, 숫자를 만들지 않는다
+- 담당자나 기한이 없으면 "미정"으로 쓴다
+- 합계, 날짜, 요일, 인원은 다시 계산해서 확인한다
+- 확정되지 않은 내용은 "확인 필요"로 따로 모은다
+- 아래 표준 양식의 순서와 표 열을 그대로 따른다
+
+[의뢰 내용]
+(한결 팀장 의뢰 문장과 "만들 것"을 붙여넣기)
+
+[표준 양식]
+(미션 카드의 미래청년일자리 표준 양식 붙여넣기)</pre></div>
+
+  <div class="copy"><div class="lab">직접 쓰고 싶은 팀을 위한 빈 틀<button data-copy>복사</button></div><pre>이름: (예: event-prep-checker)
+
+설명: (어떤 자료)를 받아 (어떤 결과물)로 정리한다. (어떤 요청)에 사용한다.
+
+요청사항:
+# (스킬 제목)
+
+## 절차
+1.
+2.
+3.
+
+## 출력 형식
+-
+
+## 검증 규칙
+- 원문에 없는 사람, 날짜, 숫자를 만들어 넣지 않는다.
+- 담당자나 기한이 없으면 "미정"으로 쓴다.
+- 합계, 날짜, 요일, 인원은 다시 계산해서 확인한다.
+- 개인정보는 (팀이 정한 방식)으로 처리한다.
+- 확정되지 않은 내용은 "확인 필요"로 따로 모은다.</pre></div>
+
+  <h3>돌발 이벤트가 오면</h3>
+  <p>처음부터 다시 쓰지 말고, 스킬 결과가 있는 채팅에 이어서 바뀐 조건만 넣으세요.</p>
+  <div class="copy"><div class="lab">조건 변경 프롬프트<button data-copy>복사</button></div><pre>조건이 바뀌었어. 같은 스킬 규칙을 그대로 지키면서 결과를 다시 만들어 줘.
+바뀐 조건: (강사 화면의 이벤트 내용)
+바뀐 부분은 표에서 알아볼 수 있게 "변경"이라고 표시해 줘.</pre></div>
+
+  <h3>✨ 보너스. Canvas로 업무 진행판 만들기</h3>
+  <ol class="steps">
+    <li>Gemini 새 채팅에서 도구의 Canvas 켜기</li>
+    <li>아래 프롬프트에 CP2 결과물을 붙여넣고 보내기</li>
+    <li>버튼을 눌러 보며 수정할 점을 말로 요청하기</li>
+  </ol>
+  <div class="copy"><div class="lab">진행판 만들기 프롬프트<button data-copy>복사</button></div><pre>아래 업무 정리 결과를 팀 업무 진행판 HTML로 만들어 줘.
+할 일마다 담당자, 기한, 상태(대기/진행/완료) 버튼이 있고,
+"미정" 항목은 빨간색으로 강조해 줘.
+위쪽에는 전체 진행률을 보여 주고, 아래쪽에는 확인 필요 목록을 보여 줘.
+
+(CP2 결과물 붙여넣기)</pre></div>
+</section>
+
+<!-- Lv4 -->
+<section id="lv4">
+  <h2><span class="lv l4">Lv4</span>버그 헌터: 옆 팀 결과물 검수</h2>
+  <p class="lead">옆 팀과 결과물을 바꿔서 아래 네 가지로 확인하세요. 찾은 오류 1개마다 점수가 됩니다.</p>
+  <div class="check"><i>1</i><div><b>없는 걸 만들었나</b><br>원문에 없는 사람, 날짜, 숫자가 들어갔나</div></div>
+  <div class="check"><i>2</i><div><b>결정과 할 일이 섞였나</b><br>정하지 않은 걸 정한 것처럼 쓰지 않았나</div></div>
+  <div class="check"><i>3</i><div><b>숫자를 직접 더해 봤나</b><br>합계, 날짜, 요일, 인원이 원본과 맞나</div></div>
+  <div class="check"><i>4</i><div><b>보내기 전에 확인했나</b><br>받는 사람, 개인정보, 공개 범위는 괜찮나</div></div>
+  <div class="copy"><div class="lab">검수 기록 양식<button data-copy>복사</button></div><pre>[검수 결과]
+검수한 팀:
+검수받은 팀:
+
+오류 1
+- 위치:
+- 무엇이 틀렸나:
+- 해당 체크 번호(1~4):
+
+오류 2
+- 위치:
+- 무엇이 틀렸나:
+- 해당 체크 번호(1~4):</pre></div>
+  <div class="note">오류를 찾았다면 원래 팀에 돌려주세요. 받은 팀은 스킬의 검증 규칙에 한 줄을 추가해서 다시 실행해 봅니다.</div>
+</section>
+
+<!-- End -->
+<section id="end">
+  <h2><span class="lv mx">MAX</span>마무리</h2>
+  <p class="lead">공유 패들렛에 남겨 주세요.</p>
+  <div class="copy"><div class="lab">회고 한 줄<button data-copy>복사</button></div><pre>내 커리어 성과 문장: 
+내일 업무와 인턴 이후에 쓸 스킬: (업무 이름)에 (스킬로 만들 절차)
+오늘 AI가 틀렸던 순간: </pre></div>
+  <div class="warn">회사에서 쓸 때는 회사 정책을 먼저 확인하고, 고객 정보와 내부 자료는 허용된 도구에만 넣으세요.</div>
+</section>
+
+<section id="words">
+  <h2>용어 한눈에</h2>
+  <div class="gl">
+    <div><b>🗣️ 프롬프트</b>그때그때 말로 하는 지시</div>
+    <div><b>🗂️ 프로젝트</b>자료와 지침을 모은 업무 폴더</div>
+    <div><b>📘 스킬</b>이름으로 불러 쓰는 업무 매뉴얼</div>
+    <div><b>🔌 MCP와 커넥터</b>AI를 다른 앱에 잇는 연결</div>
+    <div><b>📦 플러그인</b>스킬과 연결을 묶은 패키지</div>
+  </div>
+</section>
+</main>
+<footer>미래청년일자리, 한결 팀장, 등장인물과 모든 자료는 교육용 가상 사례입니다.</footer>
+
+<script>
+const TPL = c => `우리 팀은 미래청년일자리 AI 업무개선 TF야.
+팀원들의 공통점은 아래 3개야.
+1. ${c[0]||'(공통점)'}
+2. ${c[1]||'(공통점)'}
+3. ${c[2]||'(공통점)'}
+이 공통점을 살린 팀 이름 후보 5개와 짧은 팀 구호를 각각 만들어 줘.
+팀 이름은 8글자 이내로 해 줘.`;
+function updLv1(){ const c=['cm1','cm2','cm3'].map(id=>document.getElementById(id).value.trim()); document.getElementById('lv1Prompt').textContent = TPL(c); }
+['cm1','cm2','cm3'].forEach(id=>document.getElementById(id).addEventListener('input', updLv1));
+updLv1();
+document.addEventListener('click', async e=>{
+  const b = e.target.closest('[data-copy]'); if(!b) return;
+  const text = b.closest('.copy').querySelector('pre').innerText;
+  let ok = false;
+  try{ await navigator.clipboard.writeText(text); ok = true; }catch(err){
+    const t = document.createElement('textarea'); t.value = text; t.style.position='fixed'; t.style.left='-9999px';
+    document.body.appendChild(t); t.select(); try{ ok = document.execCommand('copy'); }catch(x){} document.body.removeChild(t);
+  }
+  b.textContent = ok ? '복사됨' : '직접 선택해 복사하세요'; b.classList.toggle('done', ok);
+  setTimeout(()=>{ b.textContent='복사'; b.classList.remove('done'); }, 1600);
+});
+</script>
+</body>
+</html>
